@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            background-color: antiquewhite;
+            text-align: center;
+        }
+
+        input {
+            padding: 4px
+        }
+
+        button {
+            padding: 4px;
+            background-color: green;
+            color: wheat;
+            width: 65px
+        }
+    </style>
+    <script>
+        function add() {
+            let inputStr = document.getElementById("inputStr").value;
+            let outputStr = document.getElementById("outputStr");
+            if (outputStr.children.length) {
+                outputStr.removeChild(outputStr.firstChild);
+            }
+            let output;
+            if (!inputStr) {
+                output = 0;
+            }
+
+            let delimiter = /,||\n/; // Default delimiters: comma and newline
+
+
+            if (inputStr.startsWith("//")) {
+                const delimiterEndIndex = inputStr.indexOf("\n");
+                delimiter = /;||\n/; // Escape special regex chars
+                inputStr = inputStr.substring(3);
+            }
+
+            const numberList = inputStr.split(delimiter).map(num => parseInt(num.trim(), 10));
+            const negativeNumbers = numberList.filter(num => num < 0);
+
+            if (negativeNumbers.length > 0) {
+                output = `Negative numbers not allowed: ${negativeNumbers.join(", ")}`;
+            } else {
+                output = numberList.reduce((sum, num) => sum + (isNaN(num) ? 0 : num), 0);
+            }
+            const para = document.createElement("p");
+            para.innerHTML = "Output : " + output.toString();
+            outputStr.appendChild(para);
+        }
+    </script>
+</head>
+
+<body>
+    <h1>Perform Add Method</h1>
+    <input type="text" id="inputStr" />
+
+    <button onclick="add()">Add</button>
+    <div id="outputStr"></div>
+
+</body>
+
+</html>
